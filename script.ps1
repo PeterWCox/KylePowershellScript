@@ -1,28 +1,24 @@
 # Variables 
-$humanNames = Get-Content -Path @("C:\Users\PeterCox\Desktop\KylePowershellScript\names.csv")
+$humanNames = Get-Content -Path @("C:\Users\PeterCox\Desktop\KylePowershellScript\names.csv") 
 $imageFolders = @(
     "C:\Users\PeterCox\Desktop\KylePowershellScript\Folder1\",
     "C:\Users\PeterCox\Desktop\KylePowershellScript\Folder2\"
 )
 $outputFolder = "C:\Users\PeterCox\Desktop\KylePowershellScript\Output\"
 $index = 0
-$numberOfFiles = 0
 
-# If the output folder doesn't exist, create it
-if (!(Test-Path $outputFolder)) {
-    New-Item -Path $outputFolder
-}
-else {
-    # If the output folder does exist, delete all files in it
-    $files = Get-ChildItem -Path $outputFolder
-    foreach ($file in $files) {
-        Remove-Item -Path $outputFolder -Recurse -Force
-    }
+# Shuffle Array
+$humanNames = $humanNames | Sort-Object {Get-Random}
+
+# Delete output folder if it exists
+if (Test-Path $outputFolder) {
+    Remove-Item $outputFolder -Recurse -Force
 }
 
+# Create output folder
+New-Item $outputFolder -ItemType Directory
 
-
-# Get number of files in all imageFolders
+# # Get number of files in all imageFolders
 $numberOfFiles = (Get-ChildItem -Path $imageFolders -Recurse -File | Where-Object {$_.Extension -eq ".png"}).Count
 
 
